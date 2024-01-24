@@ -1,0 +1,17 @@
+# OSX
+.DS_Store*
+Icon?
+
+# npm
+node_modules
+*.log
+*.gz
+
+
+# Env
+.development.env
+.env
+pgdata
+migration_lock.toml
+dist
+uploads

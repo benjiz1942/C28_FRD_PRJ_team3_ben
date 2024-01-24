@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:15'
+    restart: always
+    build: ./api/prisma
+    environment:
+      POSTGRES_DB: postgres12
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  app:
+    depends_on:
+      - postgres
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    # restart: always
+    image: 'benjiz1942/flash-cs-api-app:latest'
+    ports:
+      - '8080:8080'

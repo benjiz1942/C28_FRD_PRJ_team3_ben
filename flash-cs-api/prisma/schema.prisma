@@ -1,0 +1,179 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Target {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @unique @map("user_id")
+  dailyExercise Int      @map("daily_exercise")
+  dailyWord     Int      @map("daily_word")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("targets")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique @db.VarChar()
+  password      String   @db.VarChar()
+  nickname      String   @unique @db.VarChar()
+  articleChance Int      @default(0) @map("article_chances")
+  englishLevel  String   @map("english_level") @db.VarChar()
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  targets      Target?
+  decks        Deck[]
+  flashcards   Flashcard[]
+  userArticles UserArticle[]
+
+  @@map("users")
+}
+
+model Deck {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  topic     String   @db.VarChar()
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user           User            @relation(fields: [userId], references: [id])
+  deckFlashcards DeckFlashcard[]
+
+  @@map("decks")
+}
+
+model DeckFlashcard {
+  id          Int      @id @default(autoincrement())
+  deckId      Int      @map("deck_id")
+  flashcardId Int      @map("flashcard_id")
+  createAt    DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  deck      Deck      @relation(fields: [deckId], references: [id])
+  flashcard Flashcard @relation(fields: [flashcardId], references: [id])
+
+  @@map("deck_flashcard")
+}
+
+model Flashcard {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("user_id")
+  vocabulary String   @db.VarChar()
+  question   String
+  answer     String
+  notes      String?
+  image      String?
+  interval   Int
+  dueDate    DateTime @map("due_date")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  flashcardHistory FlashcardHistory[]
+  deckFlashcards   DeckFlashcard[]
+  User             User               @relation(fields: [userId], references: [id])
+
+  @@map("flashcards")
+}
+
+model FlashcardHistory {
+  id          Int      @id @default(autoincrement())
+  flashcardId Int      @map("flashcard_id")
+  performance String   @db.VarChar()
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  flashcard Flashcard @relation(fields: [flashcardId], references: [id])
+
+  @@map("flashcard_history")
+}
+
+model UserArticle {
+  id         Int      @id @default(autoincrement())
+  articleId  Int      @map("article_id")
+  userId     Int      @map("user_id")
+  isFinished Boolean  @map("is_finished")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  article   Article               @relation(fields: [articleId], references: [id])
+  user      User                  @relation(fields: [userId], references: [id])
+  userArticleExercise UserArticleExercise[]
+
+  @@map("user_article")
+}
+
+model UserArticleExercise {
+  id            Int      @id @default(autoincrement())
+  exerciseId    Int      @map("exercise_id")
+  userArticleId Int      @map("user_article_id")
+  userAnswer    Int      @map("user_answer")
+  isCorrect     Boolean  @map("is_correct")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  userArticle UserArticle @relation(fields: [userArticleId], references: [id])
+  exercise    Exercise    @relation(fields: [exerciseId], references: [id])
+
+  @@map("user_article_exercise")
+}
+
+model Exercise {
+  id            Int      @id @default(autoincrement())
+  articleId     Int      @map("article_id")
+  question     String
+  option0      String
+  option1      String
+  option2      String
+  option3      String
+  correctAnswer Int   @map("correct_answer")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  article       Article @relation(fields: [articleId], references: [id])
+  userArticleExercise UserArticleExercise[]
+
+  @@map("exercises")
+}
+
+model Article {
+  id           Int      @id @default(autoincrement())
+  articleLevel String   @map("article_level") @db.VarChar()
+  articleTheme String   @unique @map("article_theme")
+  content      String
+  creator      String   @db.VarChar()
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  exercises        Exercise[]
+  userArticles     UserArticle[]
+  searchVocabulary SearchVocabulary[]
+
+  @@map("articles")
+}
+
+model SearchVocabulary {
+  id        Int      @id @default(autoincrement())
+  articleId Int      @map("article_id")
+  word      String   @db.VarChar()
+  meaning   String
+  counter   Int
+  isShown   Boolean  @default(false) @map("is_shown")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  article Article @relation(fields: [articleId], references: [id])
+
+  @@map("search_vocabulary")
+}

@@ -1,0 +1,207 @@
+@import url("https://fonts.googleapis.com/css2?family=Kalnia:wght@300;400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.font-kalnia {
+  font-family: "Kalnia", serif;
+}
+
+.btn {
+  transition: transform 300ms ease-in-out;
+  color: white !important;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+}
+
+button {
+  transition: transform 300ms ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes borderFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes flipIn {
+  from {
+    transform: perspective(10000px) rotateY(180deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(10000px) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+.card {
+  animation: flipIn 1s ease-in forwards;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* .daily-tip-container {
+  animation: fadeInDown 2s ease-out forwards;
+  opacity: 0;
+  transform: translateY(-200px);
+} */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.daily-tip-content-container {
+  animation: fadeInUp 2s ease-out forwards;
+  opacity: 0;
+  transform: translateY(200px);
+}
+
+.bar-border-light {
+  border-bottom: 2px solid rgba(89, 87, 87, 0.2);
+  border-right: 2px solid rgba(89, 87, 87, 0.2);
+}
+
+.bar-border-dark {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+
+
+/* dark mode colors */
+.logo-dark {
+  filter: invert(100%); /* Inverted color for dark mode */
+}
+
+.icon-dark {
+  filter: invert(100%); /* Inverted color for dark mode */
+}
+
+.text-primary-content {
+  --tw-text-opacity: 1;
+  color: var(--fallback-pc, oklch(var(--pc)/var(--tw-text-opacity)));
+}
+
+/* Light mode overrides */
+.light-mode .text-primary-content {
+  --pc: 0 0 0; /* OKLCH values for black (you may need to adjust these values) */
+  --fallback-pc: #bd0e0e; /* Fallback hex color for black */
+}
+
+.adddeck-logo-light-fixed {
+  filter: none/* Styles for light mode logo when navbar is fixed */
+}
+
+.logo-light-fixed {
+  filter: invert(100%)/* Styles for light mode logo when navbar is fixed */
+}
+
+.text-light {
+  color: white/* Styles for light mode text when navbar is not fixed */
+}
+
+/*  */
+
+.text-light-fixed {
+  color: white/* Styles for light mode text when navbar is fixed */
+}
+
+.filter-broder {
+  border-color: transparent !important
+}
+
+
+.card {
+  color: black !important;
+}
+
+.badge {
+  color:azure
+}
+
+.studycard {
+  color:black !important;
+}
+
+/* Light mode specific styles */
+[data-theme='light'] .block {
+  color: black; /* This will apply black text color in light mode */
+}
+
+[data-theme='light'] .photo-border {
+  border-color: rgb(168, 167, 167)
+}
+
+[data-theme='light'] .photo-text {
+  color: black
+}
+
+[data-theme='light'] .filter {
+  color: black
+}
+
+[data-theme='light'] .dropdown-icon {
+  color: white; /* This will apply white color in light mode */
+}
+
+.show-text {
+  flex: flex-start;
+  text-align: left !important;
+}
+
+.menu :where(li > details > summary):after {
+  color: rgb(229, 226, 226);
+}
+
+.drawer-button {
+  z-index: 10;
+}
